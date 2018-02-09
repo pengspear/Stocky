@@ -1,0 +1,93 @@
+20170910
+	1, sudo apt-get install python-pip
+	2, install tensorflow
+		sudo pip install tensorflow
+		can't find packages, because there is only tensorflow-1.3.0-cp27-cp27mu-manylinux1_x86_64.whl in pypi.python.org but the python in this server is cp27m and doesn't support cp27mu.
+		so i try virtualenv
+	3, install virtualenv for multiply python version
+		sudo pip install virtualenv
+		fail too, so use url to install it
+			sudo pip install https://pypi.python.org/packages/6f/86/3dc328ee7b1a6419ebfac7896d882fba83c48e3561d22ddddf38294d3e83/virtualenv-15.1.0-py2.py3-none-any.whl#md5=aa7e5b86cc8cdb99794c4b99e8d670f
+	4, run virtualenv then install tensorflow
+		virtualenv -p /usr/bin/python3.4 $HOME/workspace/python3.4env
+		source $HOME/workspace/python3.4env/bin/activate
+		pip install tensorflow			###yes, it doesn't need privilege
+	5, install keras in virtualenv
+		by the way, scipy is installed in backgroud and very smoothly!
+		run cifar10_cnn.py in keras/example
+			just download it and python cifar10_cnn.py
+	6, run a3c of https://github.com/miyosuda/async_deep_reinforce
+		download ale
+			git clone https://github.com/miyosuda/Arcade-Learning-Environment.git
+		sudo apt-get install libsdl1.2-dev libsdl-gfx1.2-dev libsdl-image1.2-dev cmake
+		cd Arcade-Learning-Environment
+		cmake -DUSE_SDL=ON -DUSE_RLGLUE=OFF -DBUILD_EXAMPLES=ON .
+		make -j 12
+		install ale
+			python setup.py in virtualenv
+		download async_deep_reinforce		
+			install opencv-python in virtualenv
+			modify constants.py to 64 threads and use cpu
+			chang weights/biases to kernel/bias in game_ac_network.py for new version tensorflow
+			python a3c.py
+
+		
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
+misc
+---------------------------------------------------------------------------------------------------------------------------------------
+1, install tensorflow
+	sudo pip install tensorflow, can't find packages, because there is only tensorflow-1.3.0-cp27-cp27mu-manylinux1_x86_64.whl in pypi.python.org but the python in this server is cp27m and doesn't support cp27mu.
+	here is a method to get  
+	import pip;
+	print(pip.pep425tags.get_supported())
+
+2, virtualenv
+virtualenv -p /usr/bin/python3(exe) py3env(path)
+source py3env/bin/activate
+pip install package-name
+
+
+
+3, how to get current available gpus
+from tensorflow.python.client import device_lib
+
+def get_available_gpus():
+    local_device_protos = device_lib.list_local_devices()
+    return [x.name for x in local_device_protos if x.device_type == 'GPU']
+
